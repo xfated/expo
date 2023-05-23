@@ -40,17 +40,21 @@ const withLocation: ConfigPlugin<
 ) => {
   if (isIosBackgroundLocationEnabled) {
     config = withBackgroundLocation(config);
+    config = withInfoPlist(config, (config) => {
+      config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
+        locationAlwaysAndWhenInUsePermission ||
+        config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription ||
+        LOCATION_USAGE;
+      config.modResults.NSLocationAlwaysUsageDescription =
+        locationAlwaysPermission ||
+        config.modResults.NSLocationAlwaysUsageDescription ||
+        LOCATION_USAGE;
+      
+      return config;
+    });
   }
 
   config = withInfoPlist(config, (config) => {
-    config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
-      locationAlwaysAndWhenInUsePermission ||
-      config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription ||
-      LOCATION_USAGE;
-    config.modResults.NSLocationAlwaysUsageDescription =
-      locationAlwaysPermission ||
-      config.modResults.NSLocationAlwaysUsageDescription ||
-      LOCATION_USAGE;
     config.modResults.NSLocationWhenInUseUsageDescription =
       locationWhenInUsePermission ||
       config.modResults.NSLocationWhenInUseUsageDescription ||

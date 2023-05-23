@@ -17,16 +17,19 @@ const withBackgroundLocation = (config) => {
 const withLocation = (config, { locationAlwaysAndWhenInUsePermission, locationAlwaysPermission, locationWhenInUsePermission, isIosBackgroundLocationEnabled, isAndroidBackgroundLocationEnabled, } = {}) => {
     if (isIosBackgroundLocationEnabled) {
         config = withBackgroundLocation(config);
+        config = (0, config_plugins_1.withInfoPlist)(config, (config) => {
+            config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
+                locationAlwaysAndWhenInUsePermission ||
+                    config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription ||
+                    LOCATION_USAGE;
+            config.modResults.NSLocationAlwaysUsageDescription =
+                locationAlwaysPermission ||
+                    config.modResults.NSLocationAlwaysUsageDescription ||
+                    LOCATION_USAGE;
+            return config;
+        });
     }
     config = (0, config_plugins_1.withInfoPlist)(config, (config) => {
-        config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
-            locationAlwaysAndWhenInUsePermission ||
-                config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription ||
-                LOCATION_USAGE;
-        config.modResults.NSLocationAlwaysUsageDescription =
-            locationAlwaysPermission ||
-                config.modResults.NSLocationAlwaysUsageDescription ||
-                LOCATION_USAGE;
         config.modResults.NSLocationWhenInUseUsageDescription =
             locationWhenInUsePermission ||
                 config.modResults.NSLocationWhenInUseUsageDescription ||
